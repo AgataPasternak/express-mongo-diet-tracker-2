@@ -1,6 +1,7 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import "./loadEnvironment";
+import foods from "./routes/foods";
 import posts from "./routes/posts";
 import weights from "./routes/weights";
 require("dotenv").config();
@@ -26,6 +27,7 @@ MongoClient.connect(connectionString, {})
     app.set("db", db);
     app.use("/api/posts", posts);
     app.use("/api/weights", weights);
+    app.use("/api/foods", foods);
 
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);

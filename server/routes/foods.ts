@@ -7,11 +7,11 @@ const router = express.Router();
 router.get("/", (req: Request, res: Response) => {
   const db: Db = app.get("db");
   return db
-    .collection("weights")
+    .collection("foods")
     .find()
     .toArray()
     .then((results) => {
-      console.log(results);
+      console.log("tesotry komentarz");
       res.send(results).status(200);
       return;
     })
@@ -22,19 +22,22 @@ router.get("/", (req: Request, res: Response) => {
 
 router.post("/", (req: Request, res: Response) => {
   const db: Db = app.get("db");
-
+  const { name, caloriesPer100g, weight, nutriScore, tags, photo } = req.body;
+  const newFood = { name, caloriesPer100g, weight, nutriScore, tags, photo };
   console.log(req.body);
-  const { weight } = req.body;
   return db
-    .collection("weights")
-    .insertOne({ weight })
+    .collection("foods")
+    .insertOne({
+      ...newFood,
+      createdAt: new Date(),
+    })
     .then((results) => {
       return db
-        .collection("weights")
+        .collection("foods")
         .findOne({ _id: results.insertedId })
-        .then((insertedWeight) => {
-          console.log(insertedWeight);
-          res.send(insertedWeight).status(201);
+        .then((insertedFood) => {
+          console.log(insertedFood);
+          res.send(insertedFood).status(201);
         });
     })
     .catch((error) => {
