@@ -2,11 +2,13 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import "./loadEnvironment";
 import posts from "./routes/posts";
+import weights from "./routes/weights";
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+app.use(express.json());
 
 const connectionString = process.env.MONGODB_URI || "";
 
@@ -23,6 +25,7 @@ MongoClient.connect(connectionString, {})
     const db = client.db("cluster0");
     app.set("db", db);
     app.use("/api/posts", posts);
+    app.use("/api/weights", weights);
 
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
