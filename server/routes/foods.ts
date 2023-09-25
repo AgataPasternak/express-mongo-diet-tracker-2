@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { app } from "..";
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router.get("/", (req: Request, res: Response) => {
     .find()
     .toArray()
     .then((results) => {
-      console.log("tesotry komentarz");
+      console.log(results);
       res.send(results).status(200);
       return;
     })
@@ -39,6 +39,25 @@ router.post("/", (req: Request, res: Response) => {
           console.log(insertedFood);
           res.send(insertedFood).status(201);
         });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
+router.delete("/:id", (req: Request, res: Response) => {
+  const db: Db = app.get("db");
+  const foodId = req.params.id;
+  console.log(req.body);
+  return db
+    .collection("foods")
+    .deleteOne({
+      _id: new ObjectId(foodId),
+    })
+    .then((results) => {
+      console.log("Prawidłowo usunięto");
+      res.sendStatus(204);
+      return;
     })
     .catch((error) => {
       console.error(error);
