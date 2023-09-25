@@ -1,6 +1,5 @@
 import express from "express";
 import { MongoClient } from "mongodb";
-import "./db/conn";
 import "./loadEnvironment";
 import posts from "./routes/posts";
 require("dotenv").config();
