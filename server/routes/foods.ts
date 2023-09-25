@@ -45,6 +45,29 @@ router.post("/", (req: Request, res: Response) => {
     });
 });
 
+router.put("/:id", (req: Request, res: Response) => {
+  const db: Db = app.get("db");
+  const { name, caloriesPer100g, weight, nutriScore, tags, photo } = req.body;
+  const newFood = { name, caloriesPer100g, weight, nutriScore, tags, photo };
+  const foodId = req.params.id;
+  console.log(req.body);
+  return db
+    .collection("foods")
+    .updateOne({ _id: new ObjectId(foodId) }, { $set: newFood })
+    .then((results) => {
+      return db
+        .collection("foods")
+        .findOne({ _id: new ObjectId(foodId) })
+        .then((insertedFood) => {
+          console.log(insertedFood);
+          res.send(insertedFood).status(200);
+        });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
 router.delete("/:id", (req: Request, res: Response) => {
   const db: Db = app.get("db");
   const foodId = req.params.id;
