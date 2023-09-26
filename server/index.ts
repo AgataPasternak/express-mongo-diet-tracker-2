@@ -1,5 +1,8 @@
 import express from "express";
+import fs from "fs";
 import { MongoClient } from "mongodb";
+import morgan from "morgan";
+import path from "path";
 import "./loadEnvironment";
 import foods from "./routes/foods";
 import posts from "./routes/posts";
@@ -10,6 +13,17 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
+
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :date[web] :http-version",
+    { stream: accessLogStream }
+  )
+);
 
 const connectionString = process.env.MONGODB_URI || "";
 
