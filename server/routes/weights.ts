@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { Db } from "mongodb";
 import { app } from "..";
+import { HttpStatusCode } from "../shared/http-status-codes";
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get("/", (req: Request, res: Response) => {
     .toArray()
     .then((results) => {
       console.log(results);
-      res.send(results).status(200);
+      res.send(results).status(HttpStatusCode.OK);
       return;
     })
     .catch((error) => {
@@ -34,7 +35,7 @@ router.post("/", (req: Request, res: Response) => {
         .findOne({ _id: results.insertedId })
         .then((insertedWeight) => {
           console.log(insertedWeight);
-          res.send(insertedWeight).status(201);
+          res.send(insertedWeight).status(HttpStatusCode.CREATED);
         });
     })
     .catch((error) => {

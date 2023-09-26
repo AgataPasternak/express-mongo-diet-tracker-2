@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { Db, ObjectId } from "mongodb";
 import { app } from "..";
+import { HttpStatusCode } from "../shared/http-status-codes";
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get("/", (req: Request, res: Response) => {
     .toArray()
     .then((results) => {
       console.log(results);
-      res.send(results).status(200);
+      res.send(results).status(HttpStatusCode.OK);
       return;
     })
     .catch((error) => {
@@ -27,7 +28,7 @@ router.get("/:id", (req: Request, res: Response) => {
     .findOne({ _id: new ObjectId(req.params.id) })
     .then((results) => {
       console.log("Get by ID:", results);
-      res.send(results).status(200);
+      res.send(results).status(HttpStatusCode.OK);
       return;
     })
     .catch((error) => {
@@ -52,7 +53,7 @@ router.post("/", (req: Request, res: Response) => {
         .findOne({ _id: results.insertedId })
         .then((insertedFood) => {
           console.log(insertedFood);
-          res.send(insertedFood).status(201);
+          res.send(insertedFood).status(HttpStatusCode.CREATED);
         });
     })
     .catch((error) => {
@@ -74,7 +75,7 @@ router.put("/:id", (req: Request, res: Response) => {
         .findOne({ _id: new ObjectId(req.params.id) })
         .then((insertedFood) => {
           console.log(insertedFood);
-          res.send(insertedFood).status(200);
+          res.send(insertedFood).status(HttpStatusCode.OK);
         });
     })
     .catch((error) => {
@@ -92,7 +93,7 @@ router.delete("/:id", (req: Request, res: Response) => {
     })
     .then((results) => {
       console.log("Prawidłowo usunięto");
-      res.sendStatus(204);
+      res.sendStatus(HttpStatusCode.NO_CONTENT);
       return;
     })
     .catch((error) => {
