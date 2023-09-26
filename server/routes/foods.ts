@@ -20,6 +20,21 @@ router.get("/", (req: Request, res: Response) => {
     });
 });
 
+router.get("/:id", (req: Request, res: Response) => {
+  const db: Db = app.get("db");
+  return db
+    .collection("foods")
+    .findOne({ _id: new ObjectId(req.params.id) })
+    .then((results) => {
+      console.log("Get by ID:", results);
+      res.send(results).status(200);
+      return;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
 router.post("/", (req: Request, res: Response) => {
   const db: Db = app.get("db");
   const { name, caloriesPer100g, weight, nutriScore, tags, photo } = req.body;
@@ -49,15 +64,14 @@ router.put("/:id", (req: Request, res: Response) => {
   const db: Db = app.get("db");
   const { name, caloriesPer100g, weight, nutriScore, tags, photo } = req.body;
   const newFood = { name, caloriesPer100g, weight, nutriScore, tags, photo };
-  const foodId = req.params.id;
   console.log(req.body);
   return db
     .collection("foods")
-    .updateOne({ _id: new ObjectId(foodId) }, { $set: newFood })
+    .updateOne({ _id: new ObjectId(req.params.id) }, { $set: newFood })
     .then((results) => {
       return db
         .collection("foods")
-        .findOne({ _id: new ObjectId(foodId) })
+        .findOne({ _id: new ObjectId(req.params.id) })
         .then((insertedFood) => {
           console.log(insertedFood);
           res.send(insertedFood).status(200);
@@ -70,12 +84,11 @@ router.put("/:id", (req: Request, res: Response) => {
 
 router.delete("/:id", (req: Request, res: Response) => {
   const db: Db = app.get("db");
-  const foodId = req.params.id;
   console.log(req.body);
   return db
     .collection("foods")
     .deleteOne({
-      _id: new ObjectId(foodId),
+      _id: new ObjectId(req.params.id),
     })
     .then((results) => {
       console.log("Prawidłowo usunięto");
