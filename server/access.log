@@ -1,5 +1,0 @@
-GET /api/foods/650f05c3ba81e1784e3e2f43 200 148 - 150.110 ms Tue, 26 Sep 2023 10:09:22 GMT 1.1
-GET /api/foods/ 200 678351 - 1353.678 ms Tue, 26 Sep 2023 10:10:22 GMT 1.1
-GET /api/weights/ 200 539 - 134.542 ms Tue, 26 Sep 2023 10:10:25 GMT 1.1
-POST /api/foods/ 201 178 - 281.760 ms Tue, 26 Sep 2023 10:10:36 GMT 1.1
-PUT /api/foods/650f05c3ba81e1784e3e2f43 200 147 - 265.122 ms Tue, 26 Sep 2023 10:10:47 GMT 1.1
